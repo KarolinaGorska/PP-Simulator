@@ -9,22 +9,16 @@ public class Animals
         get => description;
         init
         {
-            description = value.Trim().Substring(0, Math.Min(value.Trim().Length, 15));
-
-            if (description.Length < 3)
-            {
-                description = description.PadRight(3, '#');
-            }
-            if (char.IsLower(description[0]))
-            {
-                description = char.ToUpper(description[0]) + description.Substring(1);
-            }
+            description = Validator.Shortener(value, 3, 15, '#');
         }
     }
     private uint size = 3;
     public uint Size { get; set; }
-
-    public string Info
+    public override string ToString()
+    {
+        return $"{GetType().Name.ToUpper()}: {Info}";
+    }
+    public virtual string Info
     {
         get { return $"{Description} <{Size}>"; }
     }

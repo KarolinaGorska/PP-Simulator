@@ -2,8 +2,8 @@
 
 public class Elf : Creature
 {
-    private int _singCounter = 0;
-    private int _agility;
+    private int singCounter = 0;
+    private int agility;
     public Elf()
     {
     }
@@ -15,8 +15,8 @@ public class Elf : Creature
     }
     public int Agility
     {
-        get => _agility;
-        init => _agility = Math.Max(0, Math.Min(10, value));
+        get => agility;
+        init => agility = Validator.Limiter(value, 0, 10);
     }
     public override int Power => Level * 8 + Agility * 2;
     public override string Info => $"{Name} [{Level}][{Agility}]";
@@ -27,10 +27,10 @@ public class Elf : Creature
     public void Sing()
     {
         Console.WriteLine($"{Name} is singing.");
-        _singCounter++;
-        if (_singCounter % 3 == 0)
+        singCounter++;
+        if (singCounter % 3 == 0)
         {
-            _agility++;
+            agility++;
         }
     }
 }
