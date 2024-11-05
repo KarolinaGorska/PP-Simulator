@@ -1,6 +1,6 @@
 ﻿namespace Simulator;
 
-public class Creature
+public abstract class Creature
 {
     private string name = "Unknown";
 
@@ -52,9 +52,9 @@ public class Creature
         }
     }
 
-    public string Info => $"{Name} [{level}]";
-
-    public void SayHi() => Console.WriteLine($"Hi, I'm {Name}, my level is {Level}.");
+    public abstract string Info { get; }
+    public abstract int Power { get; }
+    public abstract void SayHi();
 
     public void Go(Direction direction)
     {
