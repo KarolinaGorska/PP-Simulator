@@ -4,60 +4,41 @@ internal class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Starting Simulator!\n");
-        static void Lab4a()
+        Lab5a();
+    }
+
+    static void Lab5a()
+    {
+        try
         {
-            Console.WriteLine("HUNT TEST\n");
-            var o = new Orc() { Name = "Gorbag", Rage = 7 };
-            o.SayHi();
-            for (int i = 0; i < 10; i++)
+            Rectangle rect1 = new Rectangle(2, 3, 8, 6);
+            Console.WriteLine("Utworzono prostokąt ze współrzędnych: " + rect1);
+
+            Point p1 = new Point(8, 6);
+            Point p2 = new Point(2, 3);
+            Rectangle rect2 = new Rectangle(p1, p2);
+            Console.WriteLine("Utworzono prostokąt z punktów: " + rect2);
+
+            try
             {
-                o.Hunt();
-                o.SayHi();
+                Rectangle invalidRect = new Rectangle(5, 5, 5, 10);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Oczekiwany wyjątek: " + ex.Message);
             }
 
-            Console.WriteLine("\nSING TEST\n");
-            var e = new Elf("Legolas", agility: 2);
-            e.SayHi();
-            for (int i = 0; i < 10; i++)
-            {
-                e.Sing();
-                e.SayHi();
-            }
+            Point pointInside = new Point(4, 4);
+            Point pointOutside = new Point(10, 10);
 
-            Console.WriteLine("\nPOWER TEST\n");
-            Creature[] creatures = {
-        o,
-        e,
-        new Orc("Morgash", 3, 8),
-        new Elf("Elandor", 5, 3)
-    };
-            foreach (Creature creature in creatures)
-            {
-                Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
-            }
+            Console.WriteLine($"Czy prostokąt {rect1} zawiera punkt {pointInside}? {rect1.Contains(pointInside)}");
+            Console.WriteLine($"Czy prostokąt {rect1} zawiera punkt {pointOutside}? {rect1.Contains(pointOutside)}");
         }
-        Lab4a();
-        static void Lab4b()
+        catch (Exception ex)
         {
-            object[] myObjects = {
-        new Animals() { Description = "dogs"},
-        new Birds { Description = "  eagles ", Size = 10 },
-        new Elf("e", 15, -3),
-        new Orc("morgash", 6, 4)
-    };
-            Console.WriteLine("\nMy objects:");
-            foreach (var o in myObjects) Console.WriteLine(o);
-            /*
-                My objects:
-                ANIMALS: Dogs <3>
-                BIRDS: Eagles (fly+) <10>
-                ELF: E## [10][0]
-                ORC: Morgash [6][4]
-            */
+            Console.WriteLine("Błąd: " + ex.Message);
         }
-        Lab4b();
-
         Console.WriteLine("Press any key to exit...");
         Console.ReadKey();
-    }
+        }
 }
