@@ -16,13 +16,12 @@ public class Orc : Creature
     }
     public override int Power => Level * 7 + Rage * 3;
     public override string Info => $"{Name} [{Level}][{Rage}]";
-    public override void SayHi()
+    public override string Greeting()
     {
-        Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.");
+         return $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";
     }
     public void Hunt()
     {
-        Console.WriteLine($"{Name} is hunting.");
         huntCounter++;
         if (huntCounter % 2 == 0)
         {

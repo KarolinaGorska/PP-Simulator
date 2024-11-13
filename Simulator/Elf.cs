@@ -20,13 +20,12 @@ public class Elf : Creature
     }
     public override int Power => Level * 8 + Agility * 2;
     public override string Info => $"{Name} [{Level}][{Agility}]";
-    public override void SayHi()
+    public override string Greeting()
     {
-        Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}.");
+        return $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}.";
     }
     public void Sing()
     {
-        Console.WriteLine($"{Name} is singing.");
         singCounter++;
         if (singCounter % 3 == 0)
         {
