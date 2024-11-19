@@ -6,13 +6,24 @@ public static class Validator
     {
         return Math.Max(min, Math.Min(max, value));
     }
+
     public static string Shortener(string value, int min, int max, char placeholder)
     {
         value = value.Trim();
+        if (value.Length > max)
+        {
+            value = value.Substring(0, max).Trim();
+        }
         if (value.Length < min)
-            value = value.PadRight(min, placeholder);
-        else if (value.Length > max)
-            value = value.Substring(0, max).TrimEnd();
+        {
+            int missingchars = min - value.Length;
+            string padding = String.Concat(Enumerable.Repeat(placeholder, missingchars));
+            value = $"{value}{padding}";
+        }
+        if (char.IsLower(value[0]))
+        {
+            value = (char.ToUpper(value[0]) + value.Substring(1));
+        }
         return value;
     }
 }
