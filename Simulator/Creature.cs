@@ -45,6 +45,7 @@ public abstract class Creature
     public abstract string Info { get; }
     public abstract int Power { get; }
     public abstract string Greeting();
+    //out
     public override string ToString()
     {
         return $"{GetType().Name.ToUpper()}: {Info}";
@@ -53,6 +54,10 @@ public abstract class Creature
 
     public string[] Go(Direction[] directions)
     {
+        // Map.Next()
+        // Map.Next() == Position -> nie robimy ruchu
+        // Map.Move
+
         var result = new string[directions.Length];
         for (int i = 0; i < directions.Length; i++)
         {
@@ -61,5 +66,6 @@ public abstract class Creature
         return result;
     }
 
+    //out
     public string[] Go(string directions) => Go(DirectionParser.Parse(directions));
 }

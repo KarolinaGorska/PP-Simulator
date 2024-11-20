@@ -2,9 +2,9 @@ namespace Simulator;
 
 public static class DirectionParser
 {
-    public static Direction[] Parse(string input)
+    public static List<Direction> Parse(string input)
     {
-        List<Direction> directionsList = new List<Direction>();
+        var directionsList = new List<Direction>();
 
         foreach (char c in input.ToUpper())
         {
@@ -25,6 +25,6 @@ public static class DirectionParser
             }
         }
 
-        return directionsList.ToArray();
+        return directionsList;
     }
 }

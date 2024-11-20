@@ -5,19 +5,30 @@
     /// </summary>
     public abstract class Map
     {
-        /// <summary>
-        /// Check if give point belongs to the map.
-        /// </summary>
-        /// <param name="p">Point to check.</param>
-        /// <returns></returns>
-        public abstract bool Exist(Point p);
+        //Add(Creature, Point)
 
-        /// <summary>
-        /// Next position to the point in a given direction.
-        /// </summary>
-        /// <param name="p">Starting point.</param>
-        /// <param name="d">Direction.</param>
-        /// <returns>Next point.</returns>
+        //Remove(Creature, Point)
+
+        //Move()
+
+        //At(Point) albo x,y
+        private readonly Rectangle map;
+        public int SizeX { get; }
+        public int SizeY { get; }
+        public Map(int sizeX, int sizeY) 
+        {
+            if (sizeX < 5 || sizeY < 5)
+            {
+                throw new ArgumentOutOfRangeException(nameof(sizeX), "Minimalne wymiary mapy to 5x5.");
+            }
+            SizeX = sizeX;
+            SizeY = sizeY;
+            map = new Rectangle(0, 0, SizeX - 1, SizeY - 1);
+        }
+        public virtual bool Exist(Point p)
+        {
+            return p.X >= 0 && p.X < SizeX && p.Y >= 0 && p.Y <SizeY;
+        }
         public abstract Point Next(Point p, Direction d);
 
         /// <summary>
