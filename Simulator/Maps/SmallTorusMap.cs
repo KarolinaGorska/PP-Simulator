@@ -28,4 +28,3 @@ namespace Simulator.Maps;
             return new Point((nextDiagonalPoint.X + SizeX) % SizeX, (nextDiagonalPoint.Y + SizeY) % SizeY);
         }
     }
-}
