@@ -52,20 +52,25 @@ public abstract class Creature
     }
     public string Go(Direction direction) => $"{direction.ToString().ToLower()}";
 
-    public string[] Go(Direction[] directions)
+    public List<string> Go(List<Direction> directions)
     {
         // Map.Next()
         // Map.Next() == Position -> nie robimy ruchu
         // Map.Move
 
-        var result = new string[directions.Length];
-        for (int i = 0; i < directions.Length; i++)
+        List<string> results = new List<string>(directions.Count);
         {
-            result[i] = Go(directions[i]);
+            for (int i = 0; i < directions.Count; i++)
+            {
+                results[i] = Go(directions[i]);
+            }
         }
-        return result;
     }
 
     //out
-    public string[] Go(string directions) => Go(DirectionParser.Parse(directions));
+        public List<string> Go(string directionsString)
+    {
+        List<Direction> directions = DirectionParser.Parse(directionsString);
+        return Go(directions);
+    }
 }

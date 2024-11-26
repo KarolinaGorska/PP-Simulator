@@ -1,34 +1,41 @@
-﻿namespace Simulator.Maps
+﻿using System.Drawing;
+namespace Simulator.Maps
 {
     /// <summary>
     /// Map of points.
     /// </summary>
     public abstract class Map
     {
-        //Add(Creature, Point)
-
-        //Remove(Creature, Point)
-
-        //Move()
-
-        //At(Point) albo x,y
-        private readonly Rectangle map;
+        /// <summary>
+        /// Check if give point belongs to the map.
+        /// </summary>
+        /// <param name="p">Point to check.</param>
+        /// <returns></returns>
         public int SizeX { get; }
         public int SizeY { get; }
-        public Map(int sizeX, int sizeY) 
+        private Rectangle bounds;
+        protected Map(int sizeX, int sizeY)
         {
-            if (sizeX < 5 || sizeY < 5)
+            if (this.SizeX < 5 || SizeY < 5)
             {
-                throw new ArgumentOutOfRangeException(nameof(sizeX), "Minimalne wymiary mapy to 5x5.");
+                throw new ArgumentOutOfRangeException(nameof(sizeX), "Mapa za mała");
             }
-            SizeX = sizeX;
+            this.SizeX = sizeX;
             SizeY = sizeY;
-            map = new Rectangle(0, 0, SizeX - 1, SizeY - 1);
+            bounds = new Rectangle(0, 0, this.SizeX - 1, SizeY - 1);
         }
+        /// 
         public virtual bool Exist(Point p)
         {
-            return p.X >= 0 && p.X < SizeX && p.Y >= 0 && p.Y <SizeY;
+            return bounds.Contains(p);
         }
+
+        /// <summary>
+        /// Next position to the point in a given direction.
+        /// </summary>
+        /// <param name="p">Starting point.</param>
+        /// <param name="d">Direction.</param>
+        /// <returns>Next point.</returns>
         public abstract Point Next(Point p, Direction d);
 
         /// <summary>
@@ -41,3 +48,10 @@
         public abstract Point NextDiagonal(Point p, Direction d);
     }
 }
+//Add(Creature, Point)
+
+//Remove(Creature, Point)
+
+//Move()
+
+//At(Point) albo x,y

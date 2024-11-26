@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace Simulator.Maps;
 
-    public class SmallTorusMap : Map
+    public class SmallTorusMap : SmallMap
     {
-    public SmallTorusMap(int sizeX, int sizeY) : base(sizeX, sizeY) { }
+    private readonly int sizeX;
+    private readonly int sizeY;
+    public SmallTorusMap(int sizeX, int sizeY) : base(sizeX, sizeY) 
+    {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+    }
 
     public override Point Next(Point p, Direction d)
         {
