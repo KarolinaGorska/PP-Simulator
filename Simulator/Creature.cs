@@ -7,6 +7,12 @@ public abstract class Creature
     private string name = "Unknown";
     public Map? Map { get; private set; }
     public Point Position { get; private set; }
+    public void SetMap(Map map, Point position)
+    {
+
+        Map = map;
+        Position = position;
+    }
 
     public string Name
     {
@@ -57,9 +63,24 @@ public abstract class Creature
     public void Go(Direction direction)
     {
         if (Map == null)
+        {
+            Console.WriteLine("Creature's map is not set. Cannot move.");
             return;
+        }
         Point nextPosition = Map.Next(Position, direction);
-        Map.Move(this, Position, direction);
-        Position = nextPosition;
+        if (!Map.Exist(nextPosition))
+        {
+            Console.WriteLine($"Invalid move. {this.Info} tried to move out of bounds.");
+            return;
+        }
+        try
+        {
+            Map.Move(this, Position, direction);
+            Position = nextPosition;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to move {this.Info}: {ex.Message}");
+        }
     }
 }

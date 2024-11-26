@@ -17,9 +17,9 @@ namespace Simulator.Maps
         protected abstract List<Creature>?[,] Fields { get; }
         protected Map(int sizeX, int sizeY)
         {
-            if (SizeX < 5 || SizeY < 5)
+            if (sizeX < 5 || sizeY < 5)
             {
-                throw new ArgumentOutOfRangeException(nameof(sizeX), "Mapa jest za mała");
+                throw new ArgumentOutOfRangeException(nameof(sizeX), "Mapa za mała");
             }
             SizeX = sizeX;
             SizeY = sizeY;
