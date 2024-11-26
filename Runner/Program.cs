@@ -65,16 +65,6 @@ internal class Program
 
             Point nextPoint = map.Next(insidePoint, Direction.Up);
             Console.WriteLine($"Następny punkt po ruchu w górę od {insidePoint}: {nextPoint}");
-
-            Point borderPoint = new Point(0, map.Size - 1);
-            Point nextOutOfBounds = map.Next(borderPoint, Direction.Up);
-            Console.WriteLine($"Następny punkt po ruchu w górę od {borderPoint} (poza mapę): {nextOutOfBounds}");
-
-            Point nextDiagonalPoint = map.NextDiagonal(insidePoint, Direction.Right);
-            Console.WriteLine($"Następny punkt po ruchu po skosie (prawo-dół) od {insidePoint}: {nextDiagonalPoint}");
-
-            Point diagonalOutOfBounds = map.NextDiagonal(borderPoint, Direction.Right);
-            Console.WriteLine($"Następny punkt po ruchu po skosie od {borderPoint} (poza mapę): {diagonalOutOfBounds}");
         }
         catch (Exception ex)
         {
