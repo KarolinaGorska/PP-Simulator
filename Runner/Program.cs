@@ -46,7 +46,7 @@ internal class Program
         try
         {
             SmallSquareMap map = new SmallSquareMap(10);
-            Console.WriteLine("Mapa utworzona z rozmiarem: " + map.Size);
+            Console.WriteLine("Mapa utworzona z rozmiarem: " + map.SizeX, map.SizeY);
 
             try
             {
