@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 namespace Simulator.Maps;
 public abstract class SmallMap : Map
 {
-    //List<Creature>? [,]_fields;
-    private readonly List<Creature>?[,] fields;
+    //List<IMappable>? [,]_fields;
+    private readonly List<IMappable>?[,] fields;
     protected SmallMap(int sizeX, int sizeY) : base(sizeX, sizeY)
     {
         if (sizeX > 20) throw new ArgumentOutOfRangeException(nameof(sizeX), "Map too wide");
 
         if (sizeY > 20) throw new ArgumentOutOfRangeException(nameof(sizeY), "Map too high");
-        fields = new List<Creature>?[sizeX, sizeY];
+        fields = new List<IMappable>?[sizeX, sizeY];
     }
-    protected override List<Creature>?[,] Fields => fields;
+    protected override List<IMappable>?[,] Fields => fields;
 }
     
    

@@ -2,7 +2,7 @@
 
 namespace Simulator;
 
-public abstract class Creature
+public abstract class Creature : IMappable
 {
     private string name = "Unknown";
     public Map? Map { get; private set; }
@@ -54,6 +54,9 @@ public abstract class Creature
 
     public abstract string Info { get; }
     public abstract int Power { get; }
+    object IMappable.Info { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    object IMappable.Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     public abstract string Greeting();
     //out
     public override string ToString()

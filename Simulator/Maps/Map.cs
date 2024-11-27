@@ -14,7 +14,7 @@ namespace Simulator.Maps
         public int SizeX { get; }
         public int SizeY { get; }
         private Rectangle bounds;
-        protected abstract List<Creature>?[,] Fields { get; }
+        protected abstract List<IMappable>?[,] Fields { get; }
         protected Map(int sizeX, int sizeY)
         {
             if (sizeX < 5 || sizeY < 5)
@@ -47,58 +47,58 @@ namespace Simulator.Maps
         /// <param name="d">Direction.</param>
         /// <returns>Next point.</returns>
         public abstract Point NextDiagonal(Point p, Direction d);
-        public void Add(Creature creature, Point position)
+        public void Add(IMappable mappable, Point position)
         {
 
             int x = position.X;
             int y = position.Y;
             if (Fields[x, y] == null)
             {
-                Fields[x, y] = new List<Creature>();
+                Fields[x, y] = new List<IMappable>();
             }
-            Fields[x, y]!.Add(creature);
+            Fields[x, y]!.Add(mappable);
         }
-        public void Remove(Creature creature, Point position)
+        public void Remove(IMappable mappable, Point position)
         {
             int x = position.X;
             int y = position.Y;
-            var creatures = Fields[x, y];
-            if (creatures != null)
+            var mappables = Fields[x, y];
+            if (mappables != null)
             {
-                creatures.RemoveAll(c => c == creature);
-                if (creatures.Count == 0)
+                mappables.RemoveAll(c => c == mappable);
+                if (mappables.Count == 0)
                 {
                     Fields[x, y] = null;
                 }
             }
         }
-        public void Move(Creature creature, Point position, Direction direction)
+        public void Move(IMappable mappable, Point position, Direction direction)
         {
             int x = position.X;
             int y = position.Y;
-            Remove(creature, position);
+            Remove(mappable, position);
 
             var newPosition = Next(position, direction);
 
-            Add(creature, newPosition);
+            Add(mappable, newPosition);
         }
-        public List<Creature> At(Point position)
+        public List<IMappable> At(Point position)
         {
             int x = position.X;
             int y = position.Y;
-            var creaturesAtPoint = new List<Creature>();
-            var creatures = Fields[x, y];
-            if (creatures != null)
+            var mappablesAtPoint = new List<IMappable>();
+            var mappables = Fields[x, y];
+            if (mappables != null)
             {
-                creaturesAtPoint.AddRange(creatures);
+                mappablesAtPoint.AddRange(mappables);
             }
-            return creaturesAtPoint;
+            return mappablesAtPoint;
         }
     }
 }
-//Add(Creature, Point)
+//Add(IMappable, Point)
 
-//Remove(Creature, Point)
+//Remove(IMappable, Point)
 
 //Move()
 

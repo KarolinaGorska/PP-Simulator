@@ -13,7 +13,7 @@ namespace SimConsole
             Console.WriteLine("Starting Simulator!\n");
             Console.WriteLine("Starting positions");
             SmallSquareMap map = new(5);
-            List<Creature> creatures = [new Orc("Gorbag"), new Elf("Elandor")];
+            List<IMappable> creatures = [new Orc("Gorbag"), new Elf("Elandor")];
             List<Point> points = [new(2, 2), new(3, 1)];
             string moves = "dlrludl";
             Simulation simulation = new(map, creatures, points, moves);
@@ -26,7 +26,7 @@ namespace SimConsole
                 Console.ReadKey(true);
 
                 Console.WriteLine($"Tura {move}");
-                Console.Write($"{simulation.CurrentCreature.Info} {simulation.CurrentCreature.Position} goes {simulation.CurrentMoveName}\n");
+                Console.Write($"{simulation.CurrentMappable.Info} {simulation.CurrentMappable.Position} goes {simulation.CurrentMoveName}\n");
                 Console.WriteLine();
                 simulation.Turn();
                 mapVisualizer.Draw();
