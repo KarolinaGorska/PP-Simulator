@@ -9,8 +9,6 @@ public class Elf : Creature
     }
     public Elf(string name = "Unknown", int level = 1, int agility = 1) : base(name, level)
     {
-        Name = name;
-        Level = level;
         Agility = agility;
     }
     public int Agility
@@ -19,6 +17,7 @@ public class Elf : Creature
         init => agility = Validator.Limiter(value, 0, 10);
     }
     public override int Power => Level * 8 + Agility * 2;
+    public override char Symbol => 'E';
     public override string Info => $"{Name} [{Level}][{Agility}]";
     public override string Greeting()
     {

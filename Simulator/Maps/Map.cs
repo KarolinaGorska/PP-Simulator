@@ -47,53 +47,10 @@ namespace Simulator.Maps
         /// <param name="d">Direction.</param>
         /// <returns>Next point.</returns>
         public abstract Point NextDiagonal(Point p, Direction d);
-        public void Add(IMappable mappable, Point position)
-        {
-
-            int x = position.X;
-            int y = position.Y;
-            if (Fields[x, y] == null)
-            {
-                Fields[x, y] = new List<IMappable>();
-            }
-            Fields[x, y]!.Add(mappable);
-        }
-        public void Remove(IMappable mappable, Point position)
-        {
-            int x = position.X;
-            int y = position.Y;
-            var mappables = Fields[x, y];
-            if (mappables != null)
-            {
-                mappables.RemoveAll(c => c == mappable);
-                if (mappables.Count == 0)
-                {
-                    Fields[x, y] = null;
-                }
-            }
-        }
-        public void Move(IMappable mappable, Point position, Direction direction)
-        {
-            int x = position.X;
-            int y = position.Y;
-            Remove(mappable, position);
-
-            var newPosition = Next(position, direction);
-
-            Add(mappable, newPosition);
-        }
-        public List<IMappable> At(Point position)
-        {
-            int x = position.X;
-            int y = position.Y;
-            var mappablesAtPoint = new List<IMappable>();
-            var mappables = Fields[x, y];
-            if (mappables != null)
-            {
-                mappablesAtPoint.AddRange(mappables);
-            }
-            return mappablesAtPoint;
-        }
+        public abstract void Add(IMappable creature, Point position);
+        public abstract void Remove(IMappable creature, Point position);
+        public abstract void Move(IMappable creature, Point position, Direction direction);
+        public abstract List<IMappable> At(Point position);
     }
 }
 //Add(IMappable, Point)

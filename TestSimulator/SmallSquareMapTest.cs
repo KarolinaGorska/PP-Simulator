@@ -31,6 +31,8 @@ public class SmallSquareMapTests
     [InlineData(3, 3, 5, true)]
     [InlineData(-1, 0, 5, false)]
     [InlineData(5, 5, 5, false)]
+    [InlineData(0, 0, 5, true)]
+    [InlineData(4, 5, 5, false)]
     public void Exist_ShouldReturnCorrectValue(int x, int y, int size, bool expected)
     {
         // Arrange
