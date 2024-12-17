@@ -40,7 +40,7 @@ public class Animals : IMappable
     public int Size { get; set; } = 3;
     public override string ToString()
     {
-        return $"{GetType().Name.ToUpper()}: {Info}";
+        return $"{Symbol}: {GetType().Name.ToUpper()}";
     }
     public virtual string Info
     {

@@ -14,7 +14,7 @@ namespace Simulator.Maps
         public int SizeX { get; }
         public int SizeY { get; }
         private Rectangle bounds;
-        protected abstract List<IMappable>?[,] Fields { get; }
+        protected readonly List<IMappable>?[,] _fields;
         protected Map(int sizeX, int sizeY)
         {
             if (sizeX < 5 || sizeY < 5)
@@ -24,6 +24,7 @@ namespace Simulator.Maps
             SizeX = sizeX;
             SizeY = sizeY;
             bounds = new Rectangle(0, 0, this.SizeX - 1, SizeY - 1);
+            _fields = new List<IMappable>?[SizeX, SizeY];
         }
         /// 
         public virtual bool Exist(Point p)
@@ -47,10 +48,39 @@ namespace Simulator.Maps
         /// <param name="d">Direction.</param>
         /// <returns>Next point.</returns>
         public abstract Point NextDiagonal(Point p, Direction d);
-        public abstract void Add(IMappable creature, Point position);
-        public abstract void Remove(IMappable creature, Point position);
-        public abstract void Move(IMappable creature, Point position, Direction direction);
-        public abstract List<IMappable> At(Point position);
+        public void Add(IMappable mappable, Point position)
+        {
+            if (!Exist(position))
+                throw new ArgumentOutOfRangeException("Position is out of map bounds.");
+            if (_fields[position.X, position.Y] == null)
+                _fields[position.X, position.Y] = new List<IMappable>();
+            if (!_fields[position.X, position.Y].Contains(mappable))
+                _fields[position.X, position.Y]!.Add(mappable);
+        }
+        public void Remove(IMappable mappable, Point position)
+        {
+            if (!Exist(position))
+                throw new ArgumentOutOfRangeException("Position is out of map bounds.");
+            if (_fields[position.X, position.Y]?.Contains(mappable) ?? false)
+            {
+                _fields[position.X, position.Y]?.Remove(mappable);
+                if (_fields[position.X, position.Y]?.Count == 0)
+                    _fields[position.X, position.Y] = null;
+            }
+        }
+        public void Move(IMappable mappable, Point from, Point to)
+        {
+            if (!Exist(from) || !Exist(to))
+                throw new ArgumentOutOfRangeException("One of the positions is out of map bounds!");
+            Remove(mappable, from);
+            Add(mappable, to);
+        }
+        public List<IMappable>? At(Point position)
+        {
+            if (!Exist(position))
+                throw new ArgumentOutOfRangeException("Position is out of map bounds.");
+            return _fields[position.X, position.Y];
+        }
     }
 }
 //Add(IMappable, Point)

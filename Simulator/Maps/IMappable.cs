@@ -1,7 +1,11 @@
 ﻿namespace Simulator.Maps;
-    public interface IMappable
-    {
-        public char Symbol { get; }
-        void Go(Direction direction);
-        void SetMap(Map map, Point position);
-    }
+
+public interface IMappable
+{
+    Point Position { get; }
+    char Symbol { get; }
+    public string ToString();
+
+    void Go(Direction direction);
+    void SetMap(Map map, Point position);
+}

@@ -59,7 +59,7 @@ public abstract class Creature : IMappable
     //out
     public override string ToString()
     {
-        return $"{GetType().Name.ToUpper()}: {Info}";
+        return $"{Symbol}: {GetType().Name.ToUpper()}";
     }
     public void Go(Direction direction)
     {
