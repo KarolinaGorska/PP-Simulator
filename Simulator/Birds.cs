@@ -9,17 +9,7 @@ public class Birds : Animals
         CanFly = canFly;
     }
     public override string Info => $"{Description} ({(CanFly ? "fly+" : "fly-")}) <{Size}>";
-    public override void Go(Direction direction)
-    {
-        if (Map == null)
-        {
-            Console.WriteLine("Map is not set. The bird cannot move.");
-            return;
-        }
-
-        Point nextPosition = CanFly ? Map.Next(Map.Next(Position, direction), direction) : Map.NextDiagonal(Position, direction);
-
-        Map.Move(this, Position, direction);
-        Position = nextPosition;
-    }
+    protected override Point GetNewPosition(Direction direction) => CanFly
+        ? Map.Next(Map.Next(Position, direction), direction)
+        : Map.NextDiagonal(Position, direction);
 }

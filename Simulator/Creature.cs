@@ -8,11 +8,22 @@ public abstract class Creature : IMappable
     private string name = "Unknown";
     public Map? Map { get; private set; }
     public Point Position { get; private set; }
-    public void SetMap(Map map, Point position)
+    public void InitMapAndPosition(Map map, Point position)
     {
+        if (Map != null)
+            throw new InvalidOperationException("Ten stwór jest już przypisane do mapy.");
+
+        if (map == null)
+            throw new ArgumentNullException("Mapa nie może być null.");
+
+        if (!map.Exist(position))
+            throw new ArgumentException("Ta pozycja nie jest prawidłowa na tej mapie.", nameof(position));
+
 
         Map = map;
         Position = position;
+
+        map.Add(this, position);
     }
 
     public string Name
@@ -63,25 +74,12 @@ public abstract class Creature : IMappable
     }
     public void Go(Direction direction)
     {
-        if (Map == null)
-        {
-            Console.WriteLine("Creature's map is not set. Cannot move.");
-            return;
-        }
-        Point nextPosition = Map.Next(Position, direction);
-        if (!Map.Exist(nextPosition))
-        {
-            Console.WriteLine($"Invalid move. {this.Info} tried to move out of bounds.");
-            return;
-        }
-        try
-        {
-            Map.Move(this, Position, direction);
-            Position = nextPosition;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Failed to move {this.Info}: {ex.Message}");
-        }
+
+        if (Map == null) throw new InvalidOperationException("Creature cannot move since it's not on the map!");
+
+        var newPosition = Map.Next(Position, direction);
+
+        Map.Move(this, Position, newPosition);
+        Position = newPosition;
     }
 }

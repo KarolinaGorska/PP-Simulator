@@ -7,5 +7,5 @@ public interface IMappable
     public string ToString();
 
     void Go(Direction direction);
-    void SetMap(Map map, Point position);
+    void InitMapAndPosition(Map map, Point point);
 }

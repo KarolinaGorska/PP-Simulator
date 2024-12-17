@@ -8,20 +8,28 @@ public class Animals : IMappable
     public Point Position { get; set; }
     public virtual char Symbol => 'A';
 
-    public void SetMap(Map map, Point position)
+    public virtual void InitMapAndPosition(Map map, Point point)
     {
+        if (map == null) throw new ArgumentNullException(nameof(map));
+        if (Map != null) throw new InvalidOperationException("This animal is already on a map.");
+        if (!map.Exist(point)) throw new ArgumentException("Non-existing position for this map.");
         Map = map;
-        Position = position;
+        Position = point;
+        map.Add(this, point);
     }
     public virtual void Go(Direction direction)
     {
-        if (Map == null)
-            return;
+        if (Map == null) throw new InvalidOperationException("Animal cannot move since it's not on the map!");
+        var newPosition = GetNewPosition(direction);
 
-        Point nextPosition = Map.Next(Position, direction);
-        Map.Move((IMappable)this, Position, direction);
-        Position = nextPosition;
+        Map.Move(this, Position, newPosition);
+        Position = newPosition;
     }
+    protected virtual Point GetNewPosition(Direction direction)
+    {
+        return Map.Next(Position, direction);
+    }
+
     private string description = "Unknown";
     public Animals(string description, int size)
     {

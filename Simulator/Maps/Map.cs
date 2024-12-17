@@ -75,11 +75,11 @@ namespace Simulator.Maps
             Remove(mappable, from);
             Add(mappable, to);
         }
-        public List<IMappable>? At(Point position)
+        public List<IMappable>? At(int x, int y)
         {
-            if (!Exist(position))
-                throw new ArgumentOutOfRangeException("Position is out of map bounds.");
-            return _fields[position.X, position.Y];
+            if (x < 0 || x >= SizeX || y < 0 || y >= SizeY)
+                throw new ArgumentOutOfRangeException("Coordinates are out of map bounds.");
+            return _fields[x, y];
         }
     }
 }

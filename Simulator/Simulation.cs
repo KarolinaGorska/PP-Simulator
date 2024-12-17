@@ -2,6 +2,7 @@
 using Simulator;
 public class Simulation
 {
+    private int _currentMoveIndex = 0;
     /// <summary>
     /// Simulation's map.
     /// </summary>
@@ -21,15 +22,18 @@ public class Simulation
     /// When all mappables make moves, 
     /// next move is again for first mappable and so on.
     /// </summary>
-    public string Moves { get; private set; }
+    public string Moves { get; }
     /// <summary>
     /// Has all moves been done?
     /// </summary>
-    public bool Finished { get; private set; } = false;
+    public bool Finished = false;
     /// <summary>
     /// IMappable which will be moving current turn.
     /// </summary>
-    public IMappable CurrentMappable => IMappables[turnIndex % IMappables.Count];
+    public IMappable CurrentIMappable
+    {
+        get => IMappables[_currentMoveIndex % IMappables.Count];
+    }
     /// <summary>
     /// Lowercase name of direction which will be used in current turn.
     /// </summary>
@@ -45,25 +49,17 @@ public class Simulation
     public Simulation(Map map, List<IMappable> mappables,
         List<Point> positions, string moves)
     {
-        if (mappables.Count == 0)
-            throw new ArgumentException("The mappables list cannot be empty.");
-        if (mappables.Count != positions.Count)
-            throw new ArgumentException("The number of mappables must match the number of starting positions.");
-        Map = map;
+        if (mappables.Count == 0 || mappables == null)
+            throw new ArgumentException("Lista stworów nie może być pusta");
+        if (mappables.Count != positions.Count || positions == null)
+            throw new ArgumentException("Liczba stworów musi odpowiadać liczbie pozycji");
+        Map = map ?? throw new ArgumentNullException(nameof(map));
         IMappables = mappables;
         Positions = positions;
         Moves = moves;
         for (int i = 0; i < mappables.Count; i++)
         {
-            var mappable = mappables[i];
-            var position = positions[i];
-            if (!map.Exist(position))
-            {
-                throw new ArgumentException($"Position {position} is outside the bounds of the map.");
-            }
-            mappable.SetMap(map, position);
-            map.Add(mappable, position);
-
+            mappables[i].InitMapAndPosition(map, positions[i]);
         }
     }
     /// <summary>
@@ -72,34 +68,28 @@ public class Simulation
     /// </summary>
     public void Turn()
     {
-
         if (Finished)
         {
-            throw new InvalidOperationException("The simulation is already finished.");
-        }
-        if (Moves.Length == 0)
-        {
-            Finished = true;
-            return;
-        }
-        char currentMoveChar = Moves[0];
-        Moves = Moves.Substring(1);
-        var directions = DirectionParser.Parse(currentMoveChar.ToString());
-        if (directions == null || directions.Count == 0)
-        {
-            return;
+            throw new InvalidOperationException("Simulation has already finished.");
         }
 
-        var direction = directions[0];
-        if (CurrentMappable != null)
+        List<char> moveList = new List<char> { 'U', 'D', 'L', 'R' };
+        char moveChar = moveList[_currentMoveIndex % moveList.Count];
+
+        Direction direction;
+        try
         {
-            CurrentMappable.Go(direction);
+            direction = DirectionParser.Parse(moveChar.ToString())[0];
         }
-        else
+        catch (Exception)
         {
-            throw new InvalidOperationException("Current mappable is null.");
+            throw new InvalidOperationException($"Invalid move character: '{moveChar}'. Valid moves: 'U', 'D', 'L', 'R'.");
         }
-        if (Moves.Length == 0)
+        CurrentIMappable.Go(direction);
+
+        _currentMoveIndex++;
+
+        if (_currentMoveIndex >= Moves.Length)
         {
             Finished = true;
         }
