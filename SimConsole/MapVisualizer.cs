@@ -1,68 +1,85 @@
 ﻿using Simulator.Maps;
 using Simulator;
+using System.Text;
 
-namespace SimConsole
+namespace SimConsole;
+
+public class MapVisualizer
 {
-    public class MapVisualizer
-    {
-        private readonly Map _map;
-        public MapVisualizer(Map map)
-        {
-            _map = map;
-        }
-        public void Draw()
-        {
+    private Map _map;
 
-            Console.Write(Box.TopLeft);
+    public MapVisualizer(Map map)
+    {
+        _map = map;
+    }
+
+    public void Draw()
+    {
+        //Console.Clear();
+        Console.OutputEncoding = Encoding.UTF8;
+
+
+        Console.Write(Box.TopLeft);
+        for (int x = 0; x < _map.SizeX; x++)
+        {
+            Console.Write(Box.Horizontal);
+        }
+        Console.WriteLine(Box.TopRight);
+
+
+        for (int y = 0; y < _map.SizeY; y++)
+        {
+            Console.Write(Box.Vertical);
+
             for (int x = 0; x < _map.SizeX; x++)
             {
-                Console.Write(Box.Horizontal);
-                if (x < _map.SizeX - 1) Console.Write(Box.TopMid);
-            }
-            Console.WriteLine(Box.TopRight);
-            for (int y = _map.SizeY - 1; y >= 0; y--)
-            {
-                Console.Write(Box.Vertical);
-                for (int x = 0; x < _map.SizeX; x++)
+                var creaturesAtPosition = _map.At(x, y);
+
+                if (creaturesAtPosition == null || creaturesAtPosition.Count == 0)
                 {
-                    var creatures = _map.At(new Point(x, y));
-                    if (creatures.Count > 1)
+                    Console.Write(" ");
+                }
+                else if (creaturesAtPosition.Count > 1)
+                {
+                    Console.Write("X");
+                }
+                else
+                {
+                    var creature = creaturesAtPosition[0];
+
+                    if (creature is Orc orc)
                     {
-                        Console.Write('X');
+                        Console.Write(orc.Symbol);
                     }
-                    else if (creatures.Count == 1)
+                    else if (creature is Elf elf)
                     {
-                        var creature = creatures[0];
-                        Console.Write($"{creature.Symbol}");
+                        Console.Write(elf.Symbol);
+                    }
+                    else if (creature is Birds bird)
+                    {
+                        Console.Write(bird.Symbol);
+                    }
+                    else if (creature is Animals animal)
+                    {
+                        Console.Write(animal.Symbol);
                     }
                     else
                     {
-                        Console.Write(' ');
-                    }
-                    if (x < _map.SizeX - 1)
-                    {
-                        Console.Write(Box.Vertical);
+                        Console.Write("?");
                     }
                 }
-                Console.WriteLine(Box.Vertical);
-                if (y > 0)
-                {
-                    Console.Write(Box.MidLeft);
-                    for (int x = 0; x < _map.SizeX; x++)
-                    {
-                        Console.Write(Box.Horizontal);
-                        if (x < _map.SizeX - 1) Console.Write(Box.Cross);
-                    }
-                    Console.WriteLine(Box.MidRight);
-                }
             }
-            Console.Write(Box.BottomLeft);
-            for (int x = 0; x < _map.SizeX; x++)
-            {
-                Console.Write(Box.Horizontal);
-                if (x < _map.SizeX - 1) Console.Write(Box.BottomMid);
-            }
-            Console.WriteLine(Box.BottomRight);
+
+            Console.WriteLine(Box.Vertical);
         }
+
+
+        Console.Write(Box.BottomLeft);
+        for (int x = 0; x < _map.SizeX; x++)
+        {
+            Console.Write(Box.Horizontal);
+        }
+        Console.WriteLine(Box.BottomRight);
     }
+
 }

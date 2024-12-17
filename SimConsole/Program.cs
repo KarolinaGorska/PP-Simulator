@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using Simulator;
 using Simulator.Maps;
-using Point = Simulator.Point;
 
 namespace SimConsole
 {
@@ -13,9 +12,9 @@ namespace SimConsole
             Console.WriteLine("Starting Simulator!\n");
             Console.WriteLine("Starting positions");
 
-            BigBounceMap map = new(8, 6);
+            BigBounceMap bounceMap = new(8, 6);
 
-            List<IMappable> mappables = new()
+            List<IMappable> creatures = new()
             {
                 new Orc("Gorbag"),
                 new Elf("Elandor"),
@@ -26,30 +25,56 @@ namespace SimConsole
 
             List<Point> points = new()
             {
-                new(2, 2),
-                new(3, 1),
-                new(4, 4),
-                new(2, 5),
-                new(0, 0)
+                new Point(0, 0),
+                new Point(7, 0),
+                new Point(0, 5),
+                new Point(7, 5),
+                new Point(3, 3),
             };
+            string moves = "dlurdruldlurdruldrul";
 
-            string moves = "drulldrudlddrluldrulldruulldlu";
-
-            Simulation simulation = new(map, mappables, points, moves);
-            MapVisualizer mapVisualizer = new(simulation.Map);
-
-            var move = 1;
-            mapVisualizer.Draw();
-            while (!simulation.Finished)
+            try
             {
-                Console.WriteLine("Press any key to proceed to the next turn...");
-                Console.ReadKey(true);
-                Console.WriteLine($"Tura {move}");
-                Console.Write($"Mappable goes {simulation.CurrentMoveName}\n");
-                Console.WriteLine();
-                simulation.Turn();
+                var simulation = new Simulation(bounceMap, creatures, points, moves);
+                var mapVisualizer = new MapVisualizer(bounceMap);
+                Console.WriteLine("SIMULATION!");
+                Console.WriteLine("\n---Starting Positions---");
+                Console.WriteLine("Initial layout of the map with creatures:");
                 mapVisualizer.Draw();
-                move++;
+
+                var simulationHistory = new SimulationHistory(simulation);
+
+                while (!simulation.Finished)
+                {
+                    Console.WriteLine("SIMULATION!");
+                    Console.WriteLine($"Turn {simulation._currentMoveIndex + 1}");
+
+                    simulation.Turn();
+                    mapVisualizer.Draw();
+                }
+
+                Console.WriteLine("Simulation finished!");
+                Console.WriteLine("\n---Simulation History---");
+
+                int[] turnsToShow = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 };
+                var logVisualizer = new LogVisualizer(simulationHistory);
+
+                foreach (var turn in turnsToShow)
+                {
+                    if (turn - 1 < simulationHistory.TurnLogs.Count)
+                    {
+                        Console.WriteLine($"\nTurn {turn}:");
+                        logVisualizer.Draw(turn - 1);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\nTurn {turn}: Not available (simulation finished earlier)");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
     }
