@@ -31,13 +31,8 @@ public class Animals : IMappable
     }
 
     private string description = "Unknown";
-    public Animals(string description, int size)
-    {
-        Description = description;
-        Size = size;
-    }
 
-    public string Description
+    public required string Description
     {
         get => description;
         init

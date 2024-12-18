@@ -4,27 +4,31 @@ public static class DirectionParser
 {
     public static List<Direction> Parse(string input)
     {
-        var directionsList = new List<Direction>();
+        List<Direction> direction = new List<Direction>();
 
-        foreach (char c in input.ToUpper())
+        for (int i = 0; i < input.Length; i++)
         {
-            switch (c)
+            char c = char.ToUpper(input[i]);
+
+            if (c == 'U')
             {
-                case 'U':
-                    directionsList.Add(Direction.Up);
-                    break;
-                case 'R':
-                    directionsList.Add(Direction.Right);
-                    break;
-                case 'D':
-                    directionsList.Add(Direction.Down);
-                    break;
-                case 'L':
-                    directionsList.Add(Direction.Left);
-                    break;
+                direction.Add(Direction.Up);
+            }
+            else if (c == 'R')
+            {
+                direction.Add(Direction.Right);
+            }
+            else if (c == 'D')
+            {
+                direction.Add(Direction.Down);
+            }
+            else if (c == 'L')
+            {
+                direction.Add(Direction.Left);
             }
         }
 
-        return directionsList;
+        return direction;
+
     }
 }
